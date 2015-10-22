@@ -17,13 +17,16 @@ var server = app.listen(9789, function(){
 var io = require('socket.io').listen(server);
 var counter = 0;
 io.sockets.on('connection', function(socket){
-	io.emit('counter', {count : counter});
+	var emit_all = function(){
+		io.emit('counter', {count : counter});
+	}
+	emit_all();
 	socket.on('btn_click', function(){
 		counter++; 
-		io.emit('counter', {count : counter});
+		emit_all();
 	})
 	socket.on('reset', function(){
 		counter = 0;
-		io.emit('counter', {count : counter});
+		emit_all();
 	})
 })
